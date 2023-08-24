@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  #container {
+    display: flex;
+    justify-content: space-between;
+  }
+  #jsonInput, #htmlOutput {
+    width: 45%;
+    height: 300px;
+    resize: none;margin-top: 21px;
+  }
+  button#convertButton {
+    margin-top: 20px;
+    position: absolute;
+    /* right: 0; */
+    /* left: 0; */
+    background-color: #c7c4c430;
+    left: 435px;
+    border-radius: 5px;
+    padding-bottom: 8px;
+    padding-right: 25px;
+    padding-left: 25px;
+    border: 1px solid;
+    padding-top: 8px;
+}
+.input-head{
+    display: flex;
+}
+.outputs {
+    position: absolute;
+    border: 1px solid;
+    padding: 8px;
+    right: 447px;
+    top: 29px;
+}
+.inputs {
+    position: relative;
+    border: 1px solid;
+    padding: 8px;
+    /* right: 345px; */
+    top: 21px;
+}
+</style>
+</head>
+<body>
+    <div class="row input-head">
+        <div class="col-md-6">   <div class ="inputs">Input Html</div> </div>
+        <div class="col-md-6">   <div class="outputs">Output Html</div> </div>
+    </div>
+ 
+    <div id="container">
+        <textarea id="jsonInput" placeholder="Input JSON"></textarea>
+        <textarea id="htmlOutput" placeholder="Output HTML" readonly></textarea>
+      </div>
+      <button id="convertButton">Generate</button>
+
+<script>
+document.getElementById('convertButton').addEventListener('click', function() {
+  const jsonInput = document.getElementById('jsonInput').value;
+  let parsedData;
+
+  try {
+    parsedData = JSON.parse(jsonInput);
+  } catch (error) {
+    document.getElementById('htmlOutput').value = 'Invalid JSON';
+    return;
+  }
+
+  if (hasDuplicateIds(parsedData)) {
+    alert('Error: ID duplicated');
+    return;
+  }
+
+  const htmlOutput = JSONToHTML(parsedData);
+  document.getElementById('htmlOutput').value = htmlOutput;
+});
+
+function hasDuplicateIds(data) {
+  const idSet = new Set();
+  for (const item of data) {
+    if (idSet.has(item.id)) {
+      return true;
+    }
+    idSet.add(item.id);
+  }
+  return false;
+}
+
+function JSONToHTML(data) {
+    [
+    {
+      "id": 1,
+      "username": "Gonzales",
+      "video_name": "The Ledergberg Replica Plating Experiment",
+      "action": "Downloaded"
+    },
+    {
+      "id": 2,
+      "username": "Dominique",
+      "video_name": "Atomic Structure of DNA",
+      "action": "Viewed"
+    }
+]
+  // This is a simplified example
+  return `<div>${JSON.stringify(data)}</div>`;
+}
+</script>
+
+</body>
+</html>
